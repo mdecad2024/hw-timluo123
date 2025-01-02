@@ -397,8 +397,88 @@ openByGet();
 <p>零件與組立件考試題目以 NX 繪圖操作過程影片如下:</p>
 <p style="padding-left: 30px;">請將操作影片嵌入 ......</p>
 <p style="padding-left: 30px;">所完成的零件與組立件檔案下載</p>
-<h3 style="padding-left: 30px;"><span>w16_exam1</span></h3>
-<h1>HW3</h1>
+<h3>w16_exam1</h3>
+<br/><span>題目 (</span><span>Solvesp</span><span>ace 零件繪圖</span><span>): 請以 </span><a href="https://mde.tw/cad2024_hw/downloads/hw4_exam_copsim_slvs_nx2312.7z">hw4_exam_copsim_slvs_nx2312.7z</a><span> 中的 kicker_assembly.prt 尺寸作為依據, 將所量測的各部尺寸其小數點後兩位數, 改為自己學號的最後兩碼, (例如: 支架圓孔直徑為 12.65mm, 若學號最後兩碼為 47, 則將此圓孔直徑設為 12.47mm, 若學號最後兩碼為 01, 則將此圓孔直徑設為 12.01mm, 其他尺寸依此類推), 利用 Solvespace 繪製零件後進行組立, 並將過程錄製為操作影片,  請以"國立虎尾科技大學機械設計工程系 - 電腦輔助設計與實習 - w16_exam1: 學號" 作為影片標題, 並在影片說明欄位中敘述此一影片的繪製流程與心得, 完成後請將影片上傳至個人 Youtube 帳號中, 並嵌入個人網站中的 "w16_exam1" 頁面。</span>
+<p><a href="/downloads/41223250_w16_exam1.zip">41223250_w16_exam1.zip</a></p>
+<p></p>
+<script src="/static/jsc3d.js" type="text/javascript"></script>
+<div id="models"><canvas height="300" id="cv1" style="border: 1px solid;" width="400"></canvas> <canvas height="300" id="cv2" style="border: 1px solid;" width="400"></canvas> <canvas height="300" id="cv3" style="border: 1px solid;" width="400"></canvas> <canvas height="300" id="cv4" style="border: 1px solid;" width="400"></canvas> <!-- 可以添加更多的 canvas --></div>
+<div style="width: 400px; height: 70px; border: 1px solid;">Model Color:<input id="mdlClr" onchange="changeOption('ModelColor',this.value)" style="margin-right: 50px;" type="color" value="#00ff40"/> Back Color1:<input id="bckClr1" onchange="changeOption('BackgroundColor1',this.value)" style="margin-right: 50px;" type="color"/> Back Color2:<input id="bckClr2" onchange="changeOption('BackgroundColor2',this.value)" type="color"/><br/> Render Mode:<select id="render" onchange="changeOption('RenderMode',this.value)">
+<option>Flat</option>
+<option>Point</option>
+<option>Wireframe</option>
+<option>Smooth</option>
+</select>Definition:<select id="defini" onchange="changeOption('Definition',this.value)">
+<option>Standard</option>
+<option>low</option>
+<option>high</option>
+</select></div>
+<script type="text/javascript">
+var viewers = [];
+
+function getOptions(){
+    var mc = document.getElementById("mdlClr").value;
+    var bc1 = document.getElementById("bckClr1").value;
+    var bc2 = document.getElementById("bckClr2").value;
+    var ren = document.getElementById("render").value;
+    var def = document.getElementById("defini").value;
+    return {ModelColor: mc, BackgroundColor1: bc1, BackgroundColor2: bc2, RenderMode: ren, Definition: def};
+}
+
+function readSTLfile(opt, canvasId){
+    var canvas = document.getElementById(canvasId);
+    var viewer = new JSC3D.Viewer(canvas);
+    viewer.setParameter('SceneUrl', opt.SceneUrl);
+    viewer.setParameter('InitRotationX', 0);
+    viewer.setParameter('InitRotationY', 0);
+    viewer.setParameter('InitRotationZ', 0);
+    viewer.setParameter('ModelColor', opt.ModelColor);
+    viewer.setParameter('BackgroundColor1', opt.BackgroundColor1);
+    viewer.setParameter('BackgroundColor2', opt.BackgroundColor2);
+    viewer.setParameter('RenderMode', opt.RenderMode);
+    viewer.setParameter('Definition', opt.Definition);
+    viewer.init();
+    viewer.update();
+    viewers.push(viewer); // 保存 viewer 實例
+}
+
+function changeOption(strOpt,strValue){
+    console.log("change " + strOpt + " to " + strValue);
+    viewers.forEach(viewer => {
+        viewer.setParameter(strOpt, strValue);
+        viewer.init();
+        viewer.update();
+    });
+}
+
+function openByUrl(){
+    var url = document.getElementById("url").value;
+    var opt = getOptions();
+    opt.SceneUrl = url;
+    // 可以添加更多的 STL URL
+    readSTLfile(opt, 'cv1'); // 為每個 canvas 調用
+    readSTLfile(opt, 'cv2'); // 第二個 canvas
+    readSTLfile(opt, 'cv3'); // 第三個 canvas
+    readSTLfile(opt, 'cv4'); // 第四個 canvas
+
+}
+
+function openByGet(){
+    var urls = [
+        "https://s104.cycu.org/~41223250/w16-1.stl", 
+        "https://s104.cycu.org/~41223250/w16-2.stl", 
+        "https://s104.cycu.org/~41223250/w16-3.stl",
+        "https://s104.cycu.org/~41223250/w16-4.stl",  
+    ];
+    var opt = getOptions();
+    urls.forEach((url, index) => {
+        opt.SceneUrl = url;
+        readSTLfile(opt, 'cv' + (index + 1)); // 動態生成 canvas ID
+    });
+}
+
+openByGet();
+</script><h1>HW3</h1>
 <p>Homework 3 (20%):</p>
 <p style="padding-left: 30px;">建立 <a href="https://mde.tw/cad2024/content/BonW.html">Balance on Wheels</a> 控制系統設計模擬場景</p>
 <p style="padding-left: 30px;"><a href="https://github.com/mdecycu/Balance_On_Wheels">https://github.com/mdecycu/Balance_On_Wheels</a></p>
@@ -420,7 +500,7 @@ openByGet();
 <p style="padding-left: 30px;">......</p>
 <p>HW3 自評分數:</p>
 <p style="padding-left: 30px;">完成上述流程後, 請將 HW3 自評分數輸入 cad2024 自評表單中.</p>
-<h3 style="padding-left: 30px;"><span>w16_exam2</span></h3>
+<h3>w16_exam2</h3>
 <h1>HW4</h1>
 <p>Homework 4 (20%):</p>
 <p style="padding-left: 30px;">建立 <a href="https://mde.tw/cad2024/content/Quadruped.html">Dingo 機器狗</a>控制系統設計模擬場景</p>
@@ -440,6 +520,7 @@ openByGet();
 <p>建立模擬場景操作過程影片如下:</p>
 <p style="padding-left: 30px;">請將操作影片嵌入 ......</p>
 <p style="padding-left: 30px;">所完成的模擬場景與控制程式檔案下載</p>
+<h3>w16_exam3</h3>
 <h1>Final Report</h1>
 <p>期末口頭與書面專題報告 (30%)</p>
 <p>期末口頭專題報告影片:</p>
